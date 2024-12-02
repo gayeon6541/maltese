@@ -19,7 +19,7 @@
                 background: #EDC0CE;
             }
             to {
-                background: rgb(0, 0, 0);
+                background: rgb(255, 255, 255);
             }
         }
 
@@ -67,6 +67,28 @@
             object-fit: contain;
         }
 
+        /* 반응형 디자인 */
+        @media screen and (max-width: 768px) {
+            .foot2 img {
+                width: 250px;
+            }
+
+            .percentage {
+                font-size: 20px;
+                top: calc(70% + 10pt);
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .foot2 img {
+                width: 180px;
+            }
+
+            .percentage {
+                font-size: 16px;
+                top: calc(70% + 5pt);
+            }
+        }
     </style>
 </head>
 <body>
@@ -88,22 +110,6 @@
             }
         }, 30); // 숫자가 올라가는 속도 조정 (30ms마다 1씩 증가)
 
-        const foot2Element = document.querySelector('.foot2');
-        foot2Element.addEventListener('click', () => {
-            // 클릭 시 숫자 증가 시작
-            if (percentage < 100) {
-                percentage += 10; // 클릭할 때마다 10% 증가
-                if (percentage > 100) {
-                    percentage = 100;
-                }
-                percentageElement.textContent = `${percentage}%`;
-
-                if (percentage === 100) {
-                    clearInterval(interval);
-                    window.location.href = "index3.html";
-                }
-            }
-        });
 
         //마우스
         document.addEventListener('DOMContentLoaded', () => {
@@ -175,7 +181,7 @@
             footprint.style.transform = `rotate(${Math.random() * 360}deg)`;
             
             const img = document.createElement('img');
-            img.src = 'img/foot.png';
+            img.src = 'img/foot2.png';
             footprint.appendChild(img);
             
             document.body.appendChild(footprint);

@@ -9,15 +9,15 @@
     body {
         margin: 0;
         padding: 0;
-        background-color: #ECB3C5;
+        background-color: #ffffff;
     }
     .sfont {
         font-family: 'Pretendard', sans-serif;
-        color: rgb(255, 255, 255);
+        color: rgb(0, 0, 0);
     }
     .ca0 {
         position: absolute;
-        color: rgb(255, 255, 255);
+        color: rgb(0, 0, 0);
         font-weight : medium;
         top: 7%;
         left: 10%;
@@ -26,7 +26,7 @@
         position: relative;
         width: 80%;
         margin: 8% auto;
-        height: 1px;
+        height: 2px;
         background-color: #000000;
         background-color: transparent;
     }
@@ -36,8 +36,8 @@
         left: 0;
         top: 0;
         width: 0;
-        height: 1px;
-        background-color: #ffffff;
+        height: 2px;
+        background-color: #EDC0CE;
         opacity: 0;
         animation: drawLine 2s linear forwards;
     }
@@ -58,7 +58,7 @@
         position: absolute;
         top: 25%;
         left: 10%;
-        color:rgb(255, 255, 255);
+        color: #EDC0CE;
         font-size: 60px;
         font-weight : bold;
     }
@@ -85,88 +85,68 @@
         height: 100%;
         object-fit: contain;
     }
-    .copy {
-        position: absolute;
-        left: 50%;
-        bottom: 5%;
-        transform: translate(-50%, -50%);
-        font-size: 14px;
-        text-align: center;
-        color: #ffffff;
-    }
+    
     .flashing-text {
         position: absolute;
         bottom: 5%;
         left: 50%;
         transform: translateX(-50%);
         font-size: 15pt;
-        color: rgb(255, 255, 255);
+        color: #EDC0CE;
         animation: flash 1.5s infinite alternate;
     }
 
     @keyframes flash {
-        0% { color: #ffffff; }
-        50% { color: #e48faa; }
-        100% { color: #cf3163; }
+        0% { color: #EDC0CE; }
+        50% { color: #c6c6c6; }
+        100% { color: #EDC0CE; }
     }
-    /* 미디어 쿼리 추가 */
+    
+    /* 반응형 미디어 쿼리 */
     @media screen and (max-width: 768px) {
-        .container {
-            font-size: 32px;
-            left: 5%;
+            .container {
+                font-size: 35px;
+                left: 5%;
+            }
+            .ca0 {
+                left: 5%;
+            }
+            .section-line {
+                width: 90%;
+                margin-top: 30%;
+            }
+            .mar img {
+                width: 100%;
+                margin-bottom: 30%;
+                height: auto;
+            }
         }
-        
-        .ca0 {
-            left: 5%;
-        }
-        
-        .ca1, .ca2, .ca3, .ca4, .ca5 {
-            font-size: 16px;
-        }
-        
-        .ca1 { right: 35%; }
-        .ca2 { right: 28%; }
-        .ca3 { right: 21%; }
-        .ca4 { right: 14%; }
-        .ca5 { right: 7%; }
-
-        .section-line {
-            top: 50%;
-        }
-    }
-
-        @media screen and (max-width: 480px) {
+    @media screen and (max-width: 480px) {
         .container {
             font-size: 24px;
             top: 20%;
         }
-        
-        .ca1, .ca2, .ca3, .ca4, .ca5 {
-            font-size: 14px;
+        .ca0 {
+                left: 5%;
+            }
+        .flashing-text {
+            font-size: 10pt;
         }
-        
-        .ca1 { right: 40%; }
-        .ca2 { right: 32%; }
-        .ca3 { right: 24%; }
-        .ca4 { right: 16%; }
-        .ca5 { right: 8%; }
-
+        .section-line {
+            width: 90%;
+        }
         .mar img {
-            width: 80%;
+            width: 50%;
             height: auto;
         }
-
-        .section-line {
-            margin-top: 50%;
-        }
-        }
+    }
   </style>
 </head>
 
 <body>
     <div class="ca0">
         <a href="index.html">
-            <img src="img/dog_house.svg" width="59"alt="ca0">
+            <img src="img/dog_house2.svg" width="59"alt="ca0">
         </a>
     </div>
     <div class="sfont">
@@ -194,6 +174,7 @@
     </div>
 
     <div class="flashing-text">말티즈의 발을 클릭해주세요.</div>
+
     <!--스크립트-->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -265,7 +246,7 @@
             footprint.style.transform = `rotate(${Math.random() * 360}deg)`;
             
             const img = document.createElement('img');
-            img.src = 'img/foot.png';
+            img.src = 'img/foot2.png';
             footprint.appendChild(img);
             
             document.body.appendChild(footprint);

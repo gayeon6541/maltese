@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>말티즈 정보</title>
+    <title>말티즈 목차</title>
     <style>
         body {
             background-color: black;
@@ -17,28 +17,30 @@
         .ca0 {
             position: absolute;
             color: rgb(255, 255, 255);
-            font-weight : medium;
             top: 7%;
             left: 10%;
         }
         .container {
             margin-top: 0%;
             margin-left: 10%;
+            font-weight : bold;
         }
 
         .menu-item {
             margin: 50px 0;
-            font-size: 30px;
+            font-size: 60px;
             cursor: pointer;
-            transition: color 0.3s ease;
+            transition: transform 0.3s ease;
         }
 
         .menu-item:hover, .menu-item:active {
-            color: pink;
+            color: #ECB3C5;
+            transform: scale(1.05);
         }
 
         .close-icon:hover {
-            color: pink;
+            color: #ECB3C5;
+            transform: scale(1.05);
         }
         .footprint {
         position: fixed;
@@ -54,6 +56,48 @@
             height: 100%;
             object-fit: contain;
         }
+        /* 반응형 디자인 */
+        @media screen and (max-width: 768px) {
+            body {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .ca0 {
+                top: 5%;
+                left: 5%;
+            }
+            .container {
+                margin-left: 5%;
+                margin-top: 200px;
+                font-size: 40px;
+            }
+            .menu-item {
+                font-size: 30px;
+                margin: 30px 0;
+                margin-top: 50px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            body {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .ca0 {
+                top: 3%;
+                left: 3%;
+            }
+            .container {
+                margin-left: 0;
+                font-size: 30px;
+            }
+            .menu-item {
+                font-size: 30px;
+                margin: 20px 0;
+            }
+        }
+        
     </style>
 </head>
 <body>
@@ -65,9 +109,9 @@
 
     <div class="container">
         <div class="menu-item" onclick="navigateTo('loading.html','his.html')">오랜 역사의 말티즈</div>
-        <div class="menu-item" onclick="navigateTo('loading.html','appearance.html')">말티즈 외모</div>
-        <div class="menu-item" onclick="navigateTo('loading.html','personality.html')">말티즈 성격</div>
-        <div class="menu-item" onclick="navigateTo('loading.html','health.html')">질병 & 관리법</div>
+        <div class="menu-item" onclick="navigateTo('loading2.html','appearance.html')">말티즈 외모</div>
+        <div class="menu-item" onclick="navigateTo('loading3.html','personality.html')">말티즈 성격</div>
+        <div class="menu-item" onclick="navigateTo('loading4.html','health.html')">질병 & 관리법</div>
     </div>
 
     <script>

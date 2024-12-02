@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로딩</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #EDC0CE;
+            animation: backgroundFade 5s forwards;
+            background-size: 200% 100%;
+        }
+
+        @keyframes backgroundFade {
+            from {
+                background: #EDC0CE;
+            }
+            to {
+                background: rgb(255, 255, 255);
+            }
+        }
+
+        @font-face {
+            font-family: 'S-CoreDream-3Light';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .sfont {
+            font-family: 'S-CoreDream-3Light', sans-serif;
+            color: rgb(0, 0, 0);
+        }
+        
+        .foot2{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;        
+        }
+        .percentage {
+            position: absolute;
+            top: calc(70% + 15pt);
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'S-CoreDream-3Light', sans-serif;
+            font-size: 24px;
+            color: #EDC0CE;
+            z-index: 3;
+        }
+        .footprint {
+        position: fixed;
+        pointer-events: none;
+        width: 40px;
+        height: 40px;
+        opacity: 0.7;
+        transition: opacity 3s;
+        margin: 10px; /* 발자국 주변 여백 추가 */
+        }
+        .footprint img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        /* 반응형 디자인 */
+        @media screen and (max-width: 768px) {
+            .foot2 img {
+                width: 250px;
+            }
+
+            .percentage {
+                font-size: 20px;
+                top: calc(70% + 10pt);
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .foot2 img {
+                width: 180px;
+            }
+
+            .percentage {
+                font-size: 16px;
+                top: calc(70% + 5pt);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="foot2">
+            <img src="img/foot2.png" width="350px">
+    </div>
+    <div class="percentage">0%</div>
+
+    <script>
+        const percentageElement = document.querySelector('.percentage');
+        let percentage = 0;
+        const interval = setInterval(() => {
+            if (percentage < 100) {
+                percentage++;
+                percentageElement.textContent = `${percentage}%`;
+            } else {
+                clearInterval(interval);
+                window.location.href = "personality.html"; // 페이지 자동 이동
+            }
+        }, 30); // 숫자가 올라가는 속도 조정 (30ms마다 1씩 증가)
+
+
+        //마우스
+        document.addEventListener('DOMContentLoaded', () => {
+        const sections = [
+            { element: document.querySelector('.R2'), text: document.querySelector('.t2') },
+            { element: document.querySelector('.R3'), text: document.querySelector('.t3') },
+        ];
+        let currentSection = 0;
+        let isScrolling = false;
+
+        const lockScroll = () => {
+            isScrolling = true;
+            setTimeout(() => {
+                isScrolling = false;
+            }, 1000); // 1초 동안 스크롤 락
+        };
+
+        const showSection = (index) => {
+            if (index < sections.length) {
+                sections[index].element.style.opacity = "1";
+                sections[index].text.style.opacity = "1";
+                sections[index].element.style.transform = "translateY(0)";
+                sections[index].text.style.transform = "translateY(0)";
+            }
+        };
+
+        document.addEventListener('scroll', () => {
+            if (isScrolling) return;
+
+            const scrollY = window.scrollY;
+            if (currentSection < sections.length) {
+                const triggerPoint = window.innerHeight * (currentSection + 1); // 각 섹션의 표시 지점
+                if (scrollY > triggerPoint) {
+                    lockScroll();
+                    showSection(currentSection);
+                    currentSection++;
+                }
+            }
+        });
+
+        // 초기 상태 숨기기
+        sections.forEach((section) => {
+            section.element.style.opacity = "0";
+            section.text.style.opacity = "0";
+            section.element.style.transform = "translateY(50px)";
+            section.text.style.transform = "translateY(50px)";
+            section.element.style.transition = "opacity 0.5s, transform 0.5s";
+            section.text.style.transition = "opacity 0.5s, transform 0.5s";
+        });
+    });
+
+        let lastX = 0;
+        let lastY = 0;
+        const minDistance = 40; // 발자국 사이 최소 거리
+    
+        document.addEventListener('mousemove', function(e) {
+          // 이전 위치와의 거리 계산
+          const distance = Math.sqrt(
+            Math.pow(e.clientX - lastX, 2) + 
+            Math.pow(e.clientY - lastY, 2)
+          );
+    
+          // 최소 거리보다 멀어졌을 때만 새 발자국 생성
+          if (distance > minDistance) {
+            const footprint = document.createElement('div');
+            footprint.classList.add('footprint');
+            footprint.style.left = (e.clientX - 15) + 'px';
+            footprint.style.top = (e.clientY - 15) + 'px';
+            footprint.style.transform = `rotate(${Math.random() * 360}deg)`;
+            
+            const img = document.createElement('img');
+            img.src = 'img/foot2.png';
+            footprint.appendChild(img);
+            
+            document.body.appendChild(footprint);
+    
+            setTimeout(() => {
+              footprint.style.opacity = '0';
+            }, 300);
+    
+            setTimeout(() => {
+              document.body.removeChild(footprint);
+            }, 3300);
+    
+            // 현재 위치를 마지막 위치로 저장
+            lastX = e.clientX;
+            lastY = e.clientY;
+          }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>책 넘김 효과</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f3f3f3;
+        }
+        .ca0 {
+            position: absolute;
+            top: 7%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+        .book-container {
+            display: flex;
+            height: 60vh;
+            width: 60vw;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            perspective: 1500px; /* 3D 회전을 위한 원근감 */
+        }
+
+        .left-section {
+            flex: 0 0 50%;
+            position: relative;
+            background-color: #ddd;
+        }
+
+        .left-section img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .right-section-container {
+            flex: 0 0 50%;
+            position: relative;
+            transform-origin: left center; /* 왼쪽을 기준으로 회전 */
+            transform-style: preserve-3d;
+        }
+
+        .right-section {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden; /* 뒷면 숨기기 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0px;
+            background-color: #fff;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+            transform-origin: left; /* 왼쪽 축 기준 회전 */
+            transition: transform 1s ease-in-out;
+            transform: rotateY(90deg); /* 기본적으로 오른쪽에 위치 */
+        }
+
+        .right-section.active {
+            transform: rotateY(0); /* 활성화된 페이지는 정면 */
+        }
+
+        .right-section.previous {
+            transform: rotateY(-90deg); /* 이전 페이지는 왼쪽으로 이동 */
+        }
+
+        .right-section h1 {
+            font-size: 20pt;
+            margin-left: 30pt;
+            color: #333;
+        }
+
+        .right-section p {
+            font-size: 12pt;
+            margin-left: 30pt;
+            line-height: 1.5;
+            color: #555;
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 60px;
+            display: flex;
+            gap: 30px;
+        }
+
+        .controls button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            background-color: #333;
+            color: #fff;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .controls button:hover {
+            background-color: #555;
+        }
+
+        .controls button:disabled {
+            background-color: #aaa;
+            cursor: not-allowed;
+        }
+        
+        .arrow.left {
+            width: 60px;
+            margin-right: 70px;
+            cursor: pointer; /* 마우스 커서를 손가락 모양으로 변경 */
+        }
+
+        .arrow.right {
+            width: 60px;
+            margin-left: 70px;
+            cursor: pointer; /* 마우스 커서를 손가락 모양으로 변경 */
+        }
+
+        .arrow img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .arrow.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .copy {
+            position: absolute;
+            bottom: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 15pt;
+            color: #a5a5a5;
+            animation: flash 1.5s infinite alternate;
+        }
+
+        .footprint {
+            position: fixed;
+            pointer-events: none;
+            width: 40px;
+            height: 40px;
+            opacity: 0.7;
+            transition: opacity 3s;
+            margin: 10px; /* 발자국 주변 여백 추가 */
+            }
+        .footprint img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        /* 반응형 디자인 */
+        @media screen and (max-width: 768px) {
+            .book-container {
+                flex-direction: column;
+                height: 40vh;
+                width: 60vw;
+            }
+
+            .left-section img{
+                height: 100%;
+            }
+
+            .left-section {
+                flex: 0 0 50;
+                height: 50%;
+                position: relative;
+            }
+            .right-section-container {
+                position: relative;
+                font-size: 12px;
+            }
+
+            .arrow.left {
+                margin-right: 15px;
+                width: 30px;
+            }
+
+            .arrow.right {
+                margin-left: 15px;
+                width: 30px;
+            }
+
+            .right-section h1 {
+                font-size: 18px;
+                margin-left: 10px;
+            }
+            .right-section p {
+                font-size: 10px;
+                margin-left: 10px;
+            }
+            .copy {
+                font-size: 10pt;
+                margin-bottom: 10%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ca0">
+        <a href="index.html">
+            <img src="img/dog_house2.svg" width="59"alt="ca0">
+        </a>
+    </div>
+    <div class="arrow left" id="prev">
+        <img src="img/foot2.png" alt="이전">
+    </div>
+    <div class="book-container">
+        <div class="left-section">
+            <img id="leftImage" src="img/m1.jpg" alt="왼쪽 이미지">
+        </div>
+        
+        <div class="right-section-container">
+            <div id="page1" class="right-section active">
+                <h1>말티즈 외모</h1>
+                <p>순백색의 부드러운 털인 말티즈,<br>
+                    귀여운 외모로 한국에서 반려견으로 인기가 많습니다.<br>
+                    <br>
+                    말티즈는 길고 부드러운 흰털을 가지고 있고 속털이 없는 것이 특징입니다.
+                </p>
+            </div>
+            <div id="page2" class="right-section">
+                <h1>키, 몸무게</h1>
+                <p>키는 수컷의 경우 20~25cm, 암컷의 경우 20~23cm입니다.<br>
+                    <br>
+                    몸무게는 우리나라에서 1.8kg보다 작은 말티즈부터<br>
+                    3~6kg이상 거대 되는 보통크기의 말티즈들이 있습니다.
+                </p>
+            </div>
+            <div id="page3" class="right-section">
+                <h1>털에 관한 주의</h1>
+                <p>털이 귀를 덮고 있기 때문에 주기적으로 귀 청소를 해주는 것이 좋습니다.<br>
+                    또한, 털이 가늘어 일정 길이 이상으로 자라면 앞다리나 뒷다리 사이 등<br>
+                    잘 엉켜서 관리하기 까다롭습니다.<br>
+                    <br>
+                    그래서 보통 말티즈들은 털이 짧고 곱슬합니다.
+                </p>
+            </div>
+
+        </div>
+    </div>
+    
+    <div class="arrow right" id="next">
+        <img src="img/foot2.png" alt="다음">
+    </div>
+
+    <div class="copy">말티즈의 발을 클릭해주세요.</div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const pages = document.querySelectorAll(".right-section");
+            const prevButton = document.getElementById("prev");
+            const nextButton = document.getElementById("next");
+            const leftImage = document.getElementById("leftImage");
+            const images = ["img/m1.jpg", "img/m2.jpg", "img/tmar3.jpg"]; // 페이지별 이미지
+
+            let currentPage = 0;
+
+            const updatePage = () => {
+                pages.forEach((page, index) => {
+                    if (index < currentPage) {
+                        page.classList.add("previous");
+                        page.classList.remove("active");
+                    } else if (index === currentPage) {
+                        page.classList.add("active");
+                        page.classList.remove("previous");
+                    } else {
+                        page.classList.remove("active");
+                        page.classList.remove("previous");
+                    }
+                });
+
+                prevButton.disabled = currentPage === 0;
+                nextButton.disabled = currentPage === pages.length - 1;
+            };
+
+            const changeImageAfterAnimation = () => {
+                leftImage.src = images[currentPage];
+            };
+
+            nextButton.addEventListener("click", () => {
+                if (currentPage < pages.length - 1) {
+                    currentPage++;
+                    updatePage();
+
+                    // 이미지 변경은 애니메이션 종료 후 실행
+                    document.querySelector(".right-section-container").addEventListener(
+                        "transitionend",
+                        changeImageAfterAnimation,
+                        { once: true }
+                    );
+                }
+            });
+
+            prevButton.addEventListener("click", () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    updatePage();
+
+                    // 이미지 변경은 애니메이션 종료 후 실행
+                    document.querySelector(".right-section-container").addEventListener(
+                        "transitionend",
+                        changeImageAfterAnimation,
+                        { once: true }
+                    );
+                }
+            });
+
+            // 초기 페이지 설정
+            updatePage();
+        });
+        //마우스
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = [
+                { element: document.querySelector('.R2'), text: document.querySelector('.t2') },
+                { element: document.querySelector('.R3'), text: document.querySelector('.t3') },
+            ];
+            let currentSection = 0;
+            let isScrolling = false;
+
+            const lockScroll = () => {
+                isScrolling = true;
+                setTimeout(() => {
+                    isScrolling = false;
+                }, 1000); // 1초 동안 스크롤 락
+            };
+
+            const showSection = (index) => {
+                if (index < sections.length) {
+                    sections[index].element.style.opacity = "1";
+                    sections[index].text.style.opacity = "1";
+                    sections[index].element.style.transform = "translateY(0)";
+                    sections[index].text.style.transform = "translateY(0)";
+                }
+            };
+
+            document.addEventListener('scroll', () => {
+                if (isScrolling) return;
+
+                const scrollY = window.scrollY;
+                if (currentSection < sections.length) {
+                    const triggerPoint = window.innerHeight * (currentSection + 1); // 각 섹션의 표시 지점
+                    if (scrollY > triggerPoint) {
+                        lockScroll();
+                        showSection(currentSection);
+                        currentSection++;
+                    }
+                }
+            });
+
+            // 초기 상태 숨기기
+            sections.forEach((section) => {
+                section.element.style.opacity = "0";
+                section.text.style.opacity = "0";
+                section.element.style.transform = "translateY(50px)";
+                section.text.style.transform = "translateY(50px)";
+                section.element.style.transition = "opacity 0.5s, transform 0.5s";
+                section.text.style.transition = "opacity 0.5s, transform 0.5s";
+            });
+        });
+
+            let lastX = 0;
+            let lastY = 0;
+            const minDistance = 40; // 발자국 사이 최소 거리
+        
+            document.addEventListener('mousemove', function(e) {
+            // 이전 위치와의 거리 계산
+            const distance = Math.sqrt(
+                Math.pow(e.clientX - lastX, 2) + 
+                Math.pow(e.clientY - lastY, 2)
+            );
+        
+            // 최소 거리보다 멀어졌을 때만 새 발자국 생성
+            if (distance > minDistance) {
+                const footprint = document.createElement('div');
+                footprint.classList.add('footprint');
+                footprint.style.left = (e.clientX - 15) + 'px';
+                footprint.style.top = (e.clientY - 15) + 'px';
+                footprint.style.transform = `rotate(${Math.random() * 360}deg)`;
+                
+                const img = document.createElement('img');
+                img.src = 'img/foot2.png';
+                footprint.appendChild(img);
+                
+                document.body.appendChild(footprint);
+        
+                setTimeout(() => {
+                footprint.style.opacity = '0';
+                }, 300);
+        
+                setTimeout(() => {
+                document.body.removeChild(footprint);
+                }, 3300);
+        
+                // 현재 위치를 마지막 위치로 저장
+                lastX = e.clientX;
+                lastY = e.clientY;
+            }
+            });
+    </script>
+</body>
+</html>
