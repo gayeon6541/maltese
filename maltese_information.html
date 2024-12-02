@@ -14,7 +14,13 @@
             align-items: center;
             height: 100vh;
         }
-
+        .ca0 {
+            position: absolute;
+            color: rgb(255, 255, 255);
+            font-weight : medium;
+            top: 7%;
+            left: 10%;
+        }
         .container {
             margin-top: 0%;
             margin-left: 10%;
@@ -22,22 +28,13 @@
 
         .menu-item {
             margin: 50px 0;
-            font-size: 60px;
+            font-size: 30px;
             cursor: pointer;
             transition: color 0.3s ease;
         }
 
         .menu-item:hover, .menu-item:active {
             color: pink;
-        }
-
-        .close-icon {
-            position: absolute;
-            top: 7%;
-            right: 10%;
-            color: white;
-            font-size: 50px;
-            cursor: pointer;
         }
 
         .close-icon:hover {
@@ -60,8 +57,12 @@
     </style>
 </head>
 <body>
-    <div class="close-icon" onclick="window.location.href='index.html'">✕</div>
-    
+    <div class="ca0">
+        <a href="index.html">
+            <img src="img/dog_house2.svg" width="59"alt="ca0">
+        </a>
+    </div>
+
     <div class="container">
         <div class="menu-item" onclick="navigateTo('loading.html','his.html')">오랜 역사의 말티즈</div>
         <div class="menu-item" onclick="navigateTo('loading.html','appearance.html')">말티즈 외모</div>
