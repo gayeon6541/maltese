@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메인</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pretendard/1.3.6/static/pretendard.css">
+    <style>
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #ECB3C5;
+    }
+    .sfont {
+        font-family: 'Pretendard', sans-serif;
+        color: rgb(255, 255, 255);
+    }
+    .ca0 {
+        position: absolute;
+        color: rgb(255, 255, 255);
+        font-weight : medium;
+        top: 7%;
+        left: 10%;
+    }
+    .section-line {
+        position: relative;
+        width: 80%;
+        margin: 8% auto;
+        height: 1px;
+        background-color: #000000;
+        background-color: transparent;
+    }
+    .section-line::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 0;
+        height: 1px;
+        background-color: #ffffff;
+        opacity: 0;
+        animation: drawLine 2s linear forwards;
+    }
+    @keyframes drawLine {
+        0% {
+            width: 0;
+            opacity: 0;
+        }
+        10% {
+            opacity: 1;
+        }
+        100% {
+            width: 100%;
+            opacity: 1;
+        }
+    }
+    .container {
+        position: absolute;
+        top: 25%;
+        left: 10%;
+        color:rgb(255, 255, 255);
+        font-size: 60px;
+        font-weight : bold;
+    }
+    .container > div {
+        margin-bottom: 30px;
+    }
+    
+    .mar {
+        position: absolute;
+        bottom: 0%;
+        right: 0%;
+    }
+    .footprint {
+        position: fixed;
+        pointer-events: none;
+        width: 40px;
+        height: 40px;
+        opacity: 0.7;
+        transition: opacity 3s;
+        margin: 10px; /* 발자국 주변 여백 추가 */
+    }
+    .footprint img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    .copy {
+        position: absolute;
+        left: 50%;
+        bottom: 5%;
+        transform: translate(-50%, -50%);
+        font-size: 14px;
+        text-align: center;
+        color: #ffffff;
+    }
+    .flashing-text {
+        position: absolute;
+        bottom: 10%;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 15pt;
+        color: rgb(255, 255, 255);
+        animation: flash 1.5s infinite alternate;
+    }
+
+    @keyframes flash {
+        0% { color: #ffffff; }
+        50% { color: #e48faa; }
+        100% { color: #cf3163; }
+    }
+    /* 미디어 쿼리 추가 */
+    @media screen and (max-width: 768px) {
+        .container {
+            font-size: 32px;
+            left: 5%;
+        }
+        
+        .ca0 {
+            left: 5%;
+        }
+        
+        .ca1, .ca2, .ca3, .ca4, .ca5 {
+            font-size: 16px;
+        }
+        
+        .ca1 { right: 35%; }
+        .ca2 { right: 28%; }
+        .ca3 { right: 21%; }
+        .ca4 { right: 14%; }
+        .ca5 { right: 7%; }
+
+        .section-line {
+            top: 50%;
+        }
+    }
+
+        @media screen and (max-width: 480px) {
+        .container {
+            font-size: 24px;
+            top: 20%;
+        }
+        
+        .ca1, .ca2, .ca3, .ca4, .ca5 {
+            font-size: 14px;
+        }
+        
+        .ca1 { right: 40%; }
+        .ca2 { right: 32%; }
+        .ca3 { right: 24%; }
+        .ca4 { right: 16%; }
+        .ca5 { right: 8%; }
+
+        .mar img {
+            width: 80%;
+            height: auto;
+        }
+
+        .copy {
+            font-size: 12px;
+            bottom: 3%;
+        }
+
+        .section-line {
+            margin-top: 50%;
+        }
+
+        }
+  </style>
+</head>
+
+<body>
+    <div class="ca0">
+        <a href="index.html">
+            <img src="img/dog_house.svg" width="59"alt="ca0">
+        </a>
+    </div>
+    <div class="sfont">
+        </div>
+                <div class="ca1"></div>
+            </a>
+            
+            <div class="container">
+                <div>안녕!</div>
+                <div>난 말티즈라고 해,</div>
+                <div>나에 대해 궁금하지 않아?</div>
+            </div>
+    </div>
+
+    <div class="section-line"></div>
+
+    <div class="mar">
+        <a href="maltese_information.html"><img src="img/mar.svg" width=500px alt="mar"></a>
+    </div>
+
+    <div class="copy">
+        copyright ⓒ 2024 gayeon Kim. All rights reserved.
+    </div>
+    <div class="container">
+        <div>안녕!</div>
+        <div>난 말티즈라고 해,</div>
+        <div>나에 대해 궁금하지 않아?</div>
+    </div>
+
+    <div class="flashing-text">말티즈의 발을 클릭해주세요.</div>
+
+    <div class="copy">
+        copyright ⓒ 2024 gayeon Kim. All rights reserved.
+    </div>
+    <!--스크립트-->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+        const sections = [
+            { element: document.querySelector('.R2'), text: document.querySelector('.t2') },
+            { element: document.querySelector('.R3'), text: document.querySelector('.t3') },
+        ];
+        let currentSection = 0;
+        let isScrolling = false;
+
+        const lockScroll = () => {
+            isScrolling = true;
+            setTimeout(() => {
+                isScrolling = false;
+            }, 1000); // 1초 동안 스크롤 락
+        };
+
+        const showSection = (index) => {
+            if (index < sections.length) {
+                sections[index].element.style.opacity = "1";
+                sections[index].text.style.opacity = "1";
+                sections[index].element.style.transform = "translateY(0)";
+                sections[index].text.style.transform = "translateY(0)";
+            }
+        };
+
+        document.addEventListener('scroll', () => {
+            if (isScrolling) return;
+
+            const scrollY = window.scrollY;
+            if (currentSection < sections.length) {
+                const triggerPoint = window.innerHeight * (currentSection + 1); // 각 섹션의 표시 지점
+                if (scrollY > triggerPoint) {
+                    lockScroll();
+                    showSection(currentSection);
+                    currentSection++;
+                }
+            }
+        });
+
+        // 초기 상태 숨기기
+        sections.forEach((section) => {
+            section.element.style.opacity = "0";
+            section.text.style.opacity = "0";
+            section.element.style.transform = "translateY(50px)";
+            section.text.style.transform = "translateY(50px)";
+            section.element.style.transition = "opacity 0.5s, transform 0.5s";
+            section.text.style.transition = "opacity 0.5s, transform 0.5s";
+        });
+    });
+
+        let lastX = 0;
+        let lastY = 0;
+        const minDistance = 40; // 발자국 사이 최소 거리
+    
+        document.addEventListener('mousemove', function(e) {
+          // 이전 위치와의 거리 계산
+          const distance = Math.sqrt(
+            Math.pow(e.clientX - lastX, 2) + 
+            Math.pow(e.clientY - lastY, 2)
+          );
+    
+          // 최소 거리보다 멀어졌을 때만 새 발자국 생성
+          if (distance > minDistance) {
+            const footprint = document.createElement('div');
+            footprint.classList.add('footprint');
+            footprint.style.left = (e.clientX - 15) + 'px';
+            footprint.style.top = (e.clientY - 15) + 'px';
+            footprint.style.transform = `rotate(${Math.random() * 360}deg)`;
+            
+            const img = document.createElement('img');
+            img.src = 'img/foot.png';
+            footprint.appendChild(img);
+            
+            document.body.appendChild(footprint);
+    
+            setTimeout(() => {
+              footprint.style.opacity = '0';
+            }, 300);
+    
+            setTimeout(() => {
+              document.body.removeChild(footprint);
+            }, 3300);
+    
+            // 현재 위치를 마지막 위치로 저장
+            lastX = e.clientX;
+            lastY = e.clientY;
+          }
+        });
+    </script>
+    </body>
+</html>
